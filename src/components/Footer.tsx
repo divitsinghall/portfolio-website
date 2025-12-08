@@ -4,48 +4,74 @@ import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { PortfolioData } from '../data/portfolioData';
 
 const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-primary text-text-muted py-8 border-t border-border mt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="flex justify-center space-x-6 mb-6">
-          {PortfolioData.socialLinks.github && (
-            <a
-              href={PortfolioData.socialLinks.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-muted hover:text-accent transition-colors duration-300 transform hover:scale-110"
-              aria-label="GitHub"
-            >
-              <FaGithub size={28} />
-            </a>
-          )}
-          {PortfolioData.socialLinks.linkedin && (
-            <a
-              href={PortfolioData.socialLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-muted hover:text-accent transition-colors duration-300 transform hover:scale-110"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin size={28} />
-            </a>
-          )}
-          {PortfolioData.email && (
-            <a
-              href={`mailto:${PortfolioData.email}`}
-              className="text-text-muted hover:text-accent transition-colors duration-300 transform hover:scale-110"
-              aria-label="Email"
-            >
-              <FaEnvelope size={28} />
-            </a>
-          )}
+    <footer className="bg-surface border-t border-border py-12 mt-20">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          {/* Left - Branding */}
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="font-mono text-accent text-sm">
+              // {PortfolioData.name}
+            </div>
+            <p className="text-secondary text-sm">
+              {PortfolioData.role}
+            </p>
+          </div>
+
+          {/* Center - Social Links */}
+          <div className="flex items-center gap-6">
+            {PortfolioData.socials.github && (
+              <a
+                href={PortfolioData.socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-secondary hover:text-primary transition-colors duration-300"
+                aria-label="GitHub"
+              >
+                <FaGithub size={22} />
+              </a>
+            )}
+            {PortfolioData.socials.linkedin && (
+              <a
+                href={PortfolioData.socials.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-secondary hover:text-accent transition-colors duration-300"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedin size={22} />
+              </a>
+            )}
+            {PortfolioData.socials.email && (
+              <a
+                href={`mailto:${PortfolioData.socials.email}`}
+                className="text-secondary hover:text-success transition-colors duration-300"
+                aria-label="Email"
+              >
+                <FaEnvelope size={22} />
+              </a>
+            )}
+          </div>
+
+          {/* Right - Version & Copyright */}
+          <div className="flex flex-col items-center md:items-end gap-1 text-sm">
+            <span className="font-mono text-accent/70 text-xs">
+              v{currentYear}.1.0
+            </span>
+            <p className="text-secondary/70">
+              Built with precision
+            </p>
+          </div>
         </div>
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} {PortfolioData.name}. All rights reserved.
-        </p>
-        <p className="text-xs mt-2 text-text-muted/70">
-          Designed and built with <span className="text-accent-glow">♥</span> by a professional frontend engineer.
-        </p>
+
+        {/* Bottom bar */}
+        <div className="mt-8 pt-6 border-t border-border/50 text-center">
+          <p className="text-secondary/50 text-xs font-mono">
+            &copy; {currentYear} {PortfolioData.name} • All systems operational
+          </p>
+        </div>
       </div>
     </footer>
   );

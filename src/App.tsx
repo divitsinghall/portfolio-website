@@ -9,7 +9,7 @@ import Education from './sections/Education';
 import Achievements from './sections/Achievements';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
-import NoiseBackground from './components/NoiseBackground'; // Import the noise
+import NoiseBackground from './components/NoiseBackground';
 import { Element } from 'react-scroll';
 
 const App: React.FC = () => {
@@ -48,22 +48,22 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-primary text-text-main font-sans relative selection:bg-accent/30">
+    <div className="min-h-screen bg-bg text-primary font-sans relative">
 
-      {/* 1. Film Grain Texture (Top Layer) */}
+      {/* Film Grain Texture (Top Layer) */}
       <NoiseBackground />
 
-      {/* 2. Global Spotlight Effect (Middle Layer) */}
+      {/* Global Spotlight Effect (Middle Layer) */}
       <div
         className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15), transparent 80%)`
+          background: `radial-gradient(800px at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.06), transparent 80%)`
         }}
       />
 
       <Navbar activeSection={activeSection} />
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <main className="relative z-10">
         <Element name="hero" id="hero"><Hero /></Element>
         <Element name="about" id="about"><About /></Element>
         <Element name="skills" id="skills"><Skills /></Element>
@@ -73,6 +73,7 @@ const App: React.FC = () => {
         <Element name="achievements" id="achievements"><Achievements /></Element>
         <Element name="contact" id="contact"><Contact /></Element>
       </main>
+
       <Footer />
     </div>
   );

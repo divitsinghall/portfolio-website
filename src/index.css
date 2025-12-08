@@ -1,25 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Midnight Elegance Palette */
-  --color-primary: 15 23 42;
-  /* #0F172A */
-  --color-secondary: 30 41 59;
-  /* #1E293B */
-  --color-accent: 99 102 241;
-  /* #6366F1 */
-  --color-accent-glow: 129 140 248;
-  /* #818CF8 */
-  --color-text-main: 248 250 252;
-  /* #F8FAFC */
-  --color-text-muted: 148 163 184;
-  /* #94A3B8 */
-  --color-border: rgba(148, 163, 184, 0.1);
-  /* Subtle border with default opacity */
+  --color-bg: #030303;
+  --color-surface: #0A0A0A;
+  --color-surface-highlight: #121212;
+  --color-border: #222222;
+  --color-primary: #E1E1E1;
+  --color-secondary: #888888;
+  --color-accent: #3B82F6;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
 }
 
 @layer base {
@@ -30,7 +24,7 @@
   }
 
   body {
-    @apply bg-primary text-text-main font-sans overflow-x-hidden;
+    @apply bg-bg text-primary font-sans overflow-x-hidden;
   }
 
   h1,
@@ -39,21 +33,72 @@
   h4,
   h5,
   h6 {
-    @apply font-heading font-bold tracking-tight text-white;
+    @apply font-sans font-bold tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-white;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-surface/80 backdrop-blur-md border border-border rounded-xl;
+  }
+
+  .node-card {
+    @apply bg-surface border border-border rounded-lg p-6 hover:border-accent/50 hover:bg-surfaceHighlight transition-all duration-300 relative overflow-hidden;
+  }
+
+  .node-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .node-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .trace-line {
+    @apply w-[2px] bg-gradient-to-b from-accent via-accent/50 to-transparent;
+  }
+
+  .terminal-text {
+    @apply font-mono text-accent;
+  }
+
+  .stat-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-md font-mono text-xs text-secondary;
+  }
+
+  .stat-value {
+    @apply text-success font-semibold;
+  }
+
+  .tech-tag {
+    @apply px-2.5 py-1 bg-surface border border-border rounded text-xs font-mono text-secondary hover:border-accent/50 hover:text-accent transition-colors;
+  }
+
+  .section-container {
+    @apply py-24 relative;
+  }
+
+  .cmd-button {
+    @apply relative px-6 py-3 bg-surface border border-border text-primary font-mono text-sm hover:border-accent hover:text-accent transition-all duration-300;
+  }
+
+  .primary-button {
+    @apply px-6 py-3 bg-white text-bg font-mono text-sm font-bold hover:bg-gray-200 transition-colors flex items-center gap-2;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-secondary/30 backdrop-blur-lg border border-border;
-  }
-
-  .glass-hover {
-    @apply hover:bg-secondary/50 transition-colors duration-300;
-  }
-
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-accent-glow to-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-secondary;
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
 
   .scrollbar-hide::-webkit-scrollbar {
@@ -68,13 +113,21 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-primary;
+  @apply bg-bg;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-secondary rounded-full hover:bg-accent/50 transition-colors;
+  @apply bg-border rounded-full hover:bg-accent/50 transition-colors;
+}
+
+/* Grid Background Pattern */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(34, 34, 34, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 34, 34, 0.3) 1px, transparent 1px);
+  background-size: 50px 50px;
 }

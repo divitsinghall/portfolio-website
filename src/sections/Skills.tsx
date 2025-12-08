@@ -1,46 +1,102 @@
+// src/sections/Skills.tsx
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { PortfolioData, type Skill } from '../data/portfolioData';
+import { PortfolioData } from '../data/portfolioData';
 import { motion } from 'framer-motion';
+import { FaCode, FaServer, FaCubes, FaBrain } from 'react-icons/fa';
+
+interface SkillCategoryProps {
+  title: string;
+  icon: React.ReactNode;
+  skills: string[];
+  delay?: number;
+  command: string;
+}
+
+const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills, delay = 0, command }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay }}
+    className="node-card"
+  >
+    {/* Category header */}
+    <div className="flex items-center gap-3 mb-4">
+      <div className="text-accent">{icon}</div>
+      <h3 className="text-lg font-semibold text-primary">{title}</h3>
+    </div>
+
+    {/* Terminal command style */}
+    <div className="font-mono text-xs text-secondary mb-4 flex items-center gap-2">
+      <span className="text-accent">$</span>
+      <span>{command}</span>
+    </div>
+
+    {/* Skills list */}
+    <div className="flex flex-wrap gap-2">
+      {skills.map((skill, index) => (
+        <motion.span
+          key={skill}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: delay + (index * 0.05) }}
+          className="tech-tag"
+        >
+          {skill}
+        </motion.span>
+      ))}
+    </div>
+  </motion.div>
+);
 
 const Skills: React.FC = () => {
-  // Group skills by category
-  const categories = Array.from(new Set(PortfolioData.skills.map(s => s.category)));
+  const categories = [
+    {
+      title: "Languages",
+      icon: <FaCode size={20} />,
+      skills: PortfolioData.skills.languages,
+      command: "cat ~/.languages",
+    },
+    {
+      title: "Infrastructure",
+      icon: <FaServer size={20} />,
+      skills: PortfolioData.skills.infrastructure,
+      command: "docker ps --all",
+    },
+    {
+      title: "Frameworks",
+      icon: <FaCubes size={20} />,
+      skills: PortfolioData.skills.frameworks,
+      command: "npm list --depth=0",
+    },
+    {
+      title: "Concepts",
+      icon: <FaBrain size={20} />,
+      skills: PortfolioData.skills.concepts,
+      command: "man distributed-systems",
+    },
+  ];
 
   return (
-    <section className="py-20 bg-secondary/30">
-      <div className="container mx-auto px-4">
-        <SectionHeader title="Technical Skills" subtitle="My arsenal of tools and technologies." />
+    <section className="section-container bg-surface">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <SectionHeader
+          title="Tech Stack"
+          subtitle="Languages, infrastructure, and concepts I work with daily."
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {categories.map((category, catIndex) => (
-            <motion.div
-              key={category}
-              className="bg-primary p-6 rounded-xl border border-border hover:border-accent/30 transition-colors duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: catIndex * 0.1, duration: 0.5 }}
-            >
-              <h3 className="text-xl font-semibold text-accent-glow mb-4 border-b border-border pb-2">{category}</h3>
-              <div className="flex flex-wrap gap-3">
-                {PortfolioData.skills
-                  .filter(skill => skill.category === category)
-                  .map((skill: Skill, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-primary/30 px-3 py-1.5 rounded-full text-sm text-text-main border border-accent/20 hover:bg-accent/20 hover:border-accent/50 transition-all duration-300 cursor-default"
-                    >
-                      {skill.name}
-                      {skill.proficiency && (
-                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-primary text-xs text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-border z-20">
-                          {skill.proficiency}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {categories.map((category, index) => (
+            <SkillCategory
+              key={category.title}
+              title={category.title}
+              icon={category.icon}
+              skills={category.skills}
+              command={category.command}
+              delay={index * 0.1}
+            />
           ))}
         </div>
       </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { PortfolioData } from '../data/portfolioData';
-import { FaGithub, FaLinkedin, FaFileDownload } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaFileDownload, FaChevronDown } from 'react-icons/fa';
 
 const Hero: React.FC = () => {
   const container = {
@@ -11,113 +11,171 @@ const Hero: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.12,
+        delayChildren: 0.3,
       },
     },
   };
 
   const child = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
-      transition: { duration: 0.8, ease: "easeOut" as const }
+      transition: { duration: 0.6, ease: "easeOut" }
     },
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-      {/* Dynamic Background Orbs */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 45, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, -50, 0],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] right-[-10%] w-[700px] h-[700px] bg-accent-glow/10 rounded-full blur-[120px]"
-        />
-      </div>
+    <section className="min-h-screen bg-bg relative flex flex-col justify-center px-6 pt-20 overflow-hidden">
+      {/* Technical Grid Background */}
+      <div className="absolute inset-0 grid-bg opacity-40" />
 
-      <div className="container mx-auto px-4 z-10 text-center">
+      {/* Radial Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/50 to-bg pointer-events-none" />
+
+      {/* Accent glow */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="container mx-auto relative z-10 max-w-5xl">
         <motion.div
           variants={container}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center"
         >
-          <motion.div variants={child} className="mb-6 relative inline-block">
-            <span className="px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent-glow text-sm font-medium tracking-wide uppercase backdrop-blur-sm">
-              Available for work
-            </span>
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
-            </span>
+          {/* System Status Badge */}
+          <motion.div variants={child} className="mb-6">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-surface border border-border rounded-full">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              </span>
+              <span className="font-mono text-xs text-secondary uppercase tracking-wider">
+                {PortfolioData.availability}
+              </span>
+            </div>
           </motion.div>
 
-          <motion.h2 variants={child} className="text-accent-glow font-medium text-xl mb-4 tracking-wider">
-            Hello, I'm
-          </motion.h2>
-
-          <motion.h1 variants={child} className="text-7xl md:text-9xl font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-6 tracking-tight drop-shadow-2xl">
+          {/* Main Title */}
+          <motion.h1
+            variants={child}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary tracking-tight mb-6"
+          >
             {PortfolioData.name}
           </motion.h1>
 
-          <motion.h3 variants={child} className="text-3xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-glow mb-8 font-light">
-            {PortfolioData.title}
-          </motion.h3>
+          {/* Role subtitle */}
+          <motion.div variants={child} className="mb-8">
+            <span className="font-mono text-accent text-lg md:text-xl">
+              {PortfolioData.role}
+            </span>
+          </motion.div>
 
-          <motion.p variants={child} className="text-text-muted max-w-2xl mx-auto text-lg md:text-xl mb-12 leading-relaxed font-light">
-            {PortfolioData.tagline}
+          {/* Accent line */}
+          <motion.div
+            variants={child}
+            className="h-px w-24 bg-gradient-to-r from-accent to-transparent mb-8"
+          />
+
+          {/* Tagline */}
+          <motion.p
+            variants={child}
+            className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-4"
+          >
+            {PortfolioData.hero.tagline}
           </motion.p>
 
-          <motion.div variants={child} className="flex flex-col sm:flex-row justify-center items-center gap-6">
+          <motion.p
+            variants={child}
+            className="text-base md:text-lg text-secondary/60 max-w-2xl leading-relaxed mb-10"
+          >
+            {PortfolioData.hero.subline}
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            variants={child}
+            className="flex flex-wrap gap-4 mb-12"
+          >
             <Link
               to="projects"
               smooth={true}
               duration={800}
-              className="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] cursor-pointer"
+              className="cmd-button cursor-pointer"
             >
-              <span className="relative z-10">View Projects</span>
-              <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-accent to-accent-glow opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              ~/view_projects
             </Link>
 
-            {PortfolioData.socialLinks.resumePdf && (
-              <a
-                href={PortfolioData.socialLinks.resumePdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-4 text-white border border-white/20 rounded-full hover:bg-white/10 hover:border-white/40 transition-all duration-300 flex items-center gap-2 backdrop-blur-sm"
-              >
-                <FaFileDownload />
-                <span>Resume</span>
-              </a>
-            )}
+            <a
+              href={PortfolioData.socials.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="primary-button"
+            >
+              <FaFileDownload />
+              DOWNLOAD_RESUME
+            </a>
           </motion.div>
 
-          <motion.div variants={child} className="flex justify-center gap-8 mt-16 text-text-muted">
-            <a href={PortfolioData.socialLinks.github} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:scale-110 transition-all duration-300">
-              <FaGithub size={32} />
+          {/* Social Links */}
+          <motion.div
+            variants={child}
+            className="flex items-center gap-6"
+          >
+            <a
+              href={PortfolioData.socials.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:text-primary transition-colors duration-300"
+            >
+              <FaGithub size={24} />
             </a>
-            <a href={PortfolioData.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-accent hover:scale-110 transition-all duration-300">
-              <FaLinkedin size={32} />
+            <a
+              href={PortfolioData.socials.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:text-accent transition-colors duration-300"
+            >
+              <FaLinkedin size={24} />
             </a>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Decorative Code Block */}
+      <div className="absolute right-8 top-1/3 opacity-[0.03] hidden xl:block font-mono text-sm text-primary select-none">
+        <pre className="leading-relaxed">{`class TitanOrchestrator {
+  private readonly _master: IMasterNode;
+  private readonly _redis: IStateManager;
+  
+  async executeJob(job: Job): Promise<void> {
+    const worker = await this._master.assign(job);
+    await worker.execute();
+  }
+}`}</pre>
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <Link
+          to="about"
+          smooth={true}
+          duration={800}
+          className="cursor-pointer text-secondary/40 hover:text-accent transition-colors"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <FaChevronDown size={24} />
+          </motion.div>
+        </Link>
+      </motion.div>
     </section>
   );
 };

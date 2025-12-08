@@ -7,29 +7,47 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        heading: ['Outfit', 'sans-serif'],
+        sans: ['Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        primary: 'rgb(var(--color-primary) / <alpha-value>)',
-        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
-        accent: 'rgb(var(--color-accent) / <alpha-value>)',
-        'accent-glow': 'rgb(var(--color-accent-glow) / <alpha-value>)',
-        'text-main': 'rgb(var(--color-text-main) / <alpha-value>)',
-        'text-muted': 'rgb(var(--color-text-muted) / <alpha-value>)',
-        border: 'var(--color-border)',
+        bg: '#030303',
+        surface: '#0A0A0A',
+        surfaceHighlight: '#121212',
+        border: '#222222',
+        primary: '#E1E1E1',
+        secondary: '#888888',
+        accent: '#3B82F6',
+        success: '#10B981',
+        warning: '#F59E0B',
+      },
+      backgroundImage: {
+        'grid-pattern': "linear-gradient(to right, #1a1a1a 1px, transparent 1px), linear-gradient(to bottom, #1a1a1a 1px, transparent 1px)",
       },
       animation: {
-        'spin-slow': 'spin 12s linear infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'typing': 'typing 3.5s steps(40, end)',
+        'blink': 'blink 1s step-end infinite',
         'float': 'float 6s ease-in-out infinite',
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
+        typing: {
+          'from': { width: '0' },
+          'to': { width: '100%' },
+        },
+        blink: {
+          '50%': { opacity: '0' },
+        },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
-        }
-      }
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        glow: {
+          'from': { boxShadow: '0 0 5px #3B82F6, 0 0 10px #3B82F6' },
+          'to': { boxShadow: '0 0 10px #3B82F6, 0 0 20px #3B82F6, 0 0 30px #3B82F6' },
+        },
+      },
     },
   },
   plugins: [],

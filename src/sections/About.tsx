@@ -3,120 +3,162 @@ import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { PortfolioData } from '../data/portfolioData';
 import { motion } from 'framer-motion';
-import { FaRocket, FaCode, FaLaptopCode } from 'react-icons/fa';
+import { FaServer, FaClock, FaBolt, FaShieldAlt } from 'react-icons/fa';
 
-// Reusable Bento Card Component with animation support
-interface BentoCardProps {
-  children: React.ReactNode;
-  className?: string;
+interface StatCardProps {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
   delay?: number;
 }
 
-const BentoCard: React.FC<BentoCardProps> = ({ children, className = "", delay = 0 }) => (
+const StatCard: React.FC<StatCardProps> = ({ icon, value, label, delay = 0 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
+    viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
-    className={`bg-secondary/50 backdrop-blur-md border border-border rounded-2xl p-6 
-      hover:border-accent/30 hover:bg-secondary/80 transition-all duration-300 
-      hover:shadow-[0_0_30px_rgba(99,102,241,0.1)] group relative overflow-hidden ${className}`}
+    className="node-card text-center"
   >
-    {/* Subtle gradient gloss effect on hover */}
-    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    <div className="relative z-10 h-full">{children}</div>
+    <div className="text-accent mb-3">{icon}</div>
+    <div className="text-3xl md:text-4xl font-bold text-primary mb-2 font-mono">
+      {value}
+    </div>
+    <div className="text-sm text-secondary uppercase tracking-wider">
+      {label}
+    </div>
   </motion.div>
 );
 
 const About: React.FC = () => {
-  // Extract the incoming role for the "featured" card
-  const incomingRole = PortfolioData.experience.find(exp => exp.duration.includes("Incoming")) || PortfolioData.experience[0];
+  const stats = [
+    {
+      icon: <FaServer size={28} />,
+      value: PortfolioData.stats.microservices,
+      label: "Microservices Monitored"
+    },
+    {
+      icon: <FaClock size={28} />,
+      value: PortfolioData.stats.p95Reduction,
+      label: "P95 Triage Reduction"
+    },
+    {
+      icon: <FaBolt size={28} />,
+      value: PortfolioData.stats.reqPerSec,
+      label: "Requests / Second"
+    },
+    {
+      icon: <FaShieldAlt size={28} />,
+      value: PortfolioData.stats.mttrReduction,
+      label: "MTTR Reduction"
+    },
+  ];
 
   return (
-    <section className="py-24 bg-primary relative">
-      <div className="container mx-auto px-4">
-        <SectionHeader title="About Me" subtitle="A glimpse into my world, stats, and passion." />
+    <section className="section-container bg-bg">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <SectionHeader
+          title="System Overview"
+          subtitle="Engineering metrics from production systems and real-world impact."
+        />
 
-        {/* The Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-
-          {/* 1. Main Bio Block (Spans 2 cols) */}
-          <BentoCard className="md:col-span-2 md:row-span-2 flex flex-col justify-center min-h-[300px]">
-            <div className="flex items-center gap-3 mb-4 text-accent-glow">
-              <FaLaptopCode size={24} />
-              <h3 className="text-xl font-bold">The Developer</h3>
-            </div>
-            <p className="text-text-muted text-lg leading-relaxed mb-6">
-              {PortfolioData.about.bio}
-            </p>
-            <div className="flex flex-wrap gap-3 mt-auto">
-              {PortfolioData.about.highlights.map((highlight, i) => (
-                <span key={i} className="text-xs font-medium bg-primary/30 text-accent-glow px-3 py-1 rounded-full border border-accent/20">
-                  {highlight}
-                </span>
-              ))}
-            </div>
-          </BentoCard>
-
-          {/* 2. Avatar Block */}
-          <BentoCard className="flex items-center justify-center p-0 overflow-hidden bg-secondary/30" delay={0.1}>
-            <img
-              src={PortfolioData.about.avatarUrl}
-              alt={PortfolioData.name}
-              className="w-full h-full object-cover min-h-[250px] opacity-90 group-hover:scale-110 transition-transform duration-700"
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+          {stats.map((stat, index) => (
+            <StatCard
+              key={stat.label}
+              icon={stat.icon}
+              value={stat.value}
+              label={stat.label}
+              delay={index * 0.1}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-60" />
-            <div className="absolute bottom-4 left-4">
-              <p className="text-white font-bold text-xl">{PortfolioData.name}</p>
-              <p className="text-accent-glow text-sm">{PortfolioData.title.split('&')[0]}</p>
-            </div>
-          </BentoCard>
-
-          {/* 3. Stats Block (Education/GPA) */}
-          <BentoCard className="flex flex-col justify-center items-center text-center" delay={0.2}>
-            <div className="mb-2 p-3 bg-accent/10 rounded-full text-accent">
-              {/* Assuming University of Alberta is the focus */}
-              <span className="text-2xl font-bold">3rd</span>
-            </div>
-            <span className="text-3xl font-bold text-white mb-1">Year</span>
-            <span className="text-sm text-text-muted uppercase tracking-wider">CS Student @ UofA</span>
-          </BentoCard>
-
-          {/* 4. Featured Tech Stack Block */}
-          <BentoCard className="flex flex-col justify-between" delay={0.3}>
-            <div className="flex items-center gap-2 text-accent-glow mb-4">
-              <FaCode />
-              <h4 className="font-bold uppercase text-sm tracking-wider">Core Arsenal</h4>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {/* Taking top 6 skills manually or slicing the array */}
-              {['Java', 'Python', 'React', 'AWS', 'Django', 'PostgreSQL'].map(tech => (
-                <span key={tech} className="px-3 py-1.5 bg-secondary text-text-muted text-xs font-mono rounded border border-border hover:border-accent-glow/50 hover:text-accent-glow transition-colors cursor-default">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </BentoCard>
-
-          {/* 5. "Next Up" Block (Incoming Role) */}
-          <BentoCard className="bg-gradient-to-br from-accent/20 to-accent-glow/20 border-accent/20" delay={0.4}>
-            <div className="flex flex-col h-full justify-between">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h4 className="text-text-muted text-xs uppercase font-bold mb-1">Next Adventure</h4>
-                  <h3 className="text-xl font-bold text-white">{incomingRole.company}</h3>
-                </div>
-                <FaRocket className="text-yellow-400 text-xl animate-pulse" />
-              </div>
-
-              <div className="mt-4">
-                <p className="text-accent-glow text-sm font-medium">{incomingRole.title}</p>
-                <p className="text-text-muted text-xs mt-1">{incomingRole.duration}</p>
-              </div>
-            </div>
-          </BentoCard>
-
+          ))}
         </div>
+
+        {/* Profile Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="node-card"
+        >
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Terminal-style profile */}
+            <div className="lg:w-1/3">
+              <div className="bg-bg rounded-lg border border-border overflow-hidden">
+                {/* Terminal header */}
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-surface">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <span className="ml-2 font-mono text-xs text-secondary">profile.json</span>
+                </div>
+
+                {/* Terminal content */}
+                <div className="p-4 font-mono text-sm">
+                  <div className="text-secondary">{"{"}</div>
+                  <div className="pl-4">
+                    <span className="text-accent">"name"</span>
+                    <span className="text-secondary">: </span>
+                    <span className="text-success">"{PortfolioData.name}"</span>
+                    <span className="text-secondary">,</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-accent">"role"</span>
+                    <span className="text-secondary">: </span>
+                    <span className="text-success">"{PortfolioData.role}"</span>
+                    <span className="text-secondary">,</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-accent">"status"</span>
+                    <span className="text-secondary">: </span>
+                    <span className="text-success">"{PortfolioData.availability}"</span>
+                    <span className="text-secondary">,</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-accent">"location"</span>
+                    <span className="text-secondary">: </span>
+                    <span className="text-success">"Edmonton, AB"</span>
+                  </div>
+                  <div className="text-secondary">{"}"}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bio section */}
+            <div className="lg:w-2/3 flex flex-col justify-center">
+              <h3 className="text-2xl font-bold text-primary mb-4">
+                The Engineer
+              </h3>
+              <p className="text-secondary leading-relaxed mb-6">
+                I'm a Computer Science student at the University of Alberta specializing in
+                Artificial Intelligence, with deep expertise in distributed systems and
+                high-performance computing. My work at Amazon involved building incident
+                diagnostics platforms that aggregate telemetry from 9,000+ microservices,
+                significantly reducing triage times and MTTR.
+              </p>
+              <p className="text-secondary leading-relaxed mb-6">
+                I'm passionate about building systems that are not just functional, but
+                resilient, scalable, and elegant. Whether it's designing atomic consistency
+                guarantees for flash-sale engines or architecting master-worker patterns
+                for distributed job scheduling, I focus on the details that matter at scale.
+              </p>
+
+              {/* Quick highlights */}
+              <div className="flex flex-wrap gap-3">
+                <span className="stat-badge">
+                  <span className="text-secondary">Education:</span>
+                  <span className="stat-value">3rd Year CS @ UofA</span>
+                </span>
+                <span className="stat-badge">
+                  <span className="text-secondary">Focus:</span>
+                  <span className="stat-value">AI & Distributed Systems</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
