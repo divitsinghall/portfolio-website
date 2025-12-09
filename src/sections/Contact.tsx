@@ -67,7 +67,7 @@ const Contact: React.FC = () => {
                 <div className="mt-2 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
                   <span className="text-success">
-                    Status: Available for opportunities
+                    Status: Available for intern opportunities
                   </span>
                 </div>
               </div>
