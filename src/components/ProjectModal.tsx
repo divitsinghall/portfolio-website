@@ -1,7 +1,7 @@
 // src/components/ProjectModal.tsx
 import React from 'react';
-import { type Project } from '../data/portfolioData';
-import { FaTimes, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import type { Project } from '../data/portfolioData';
+import { FaTimes, FaGithub, FaExternalLinkAlt, FaTerminal } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProjectModalProps {
@@ -16,102 +16,101 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="bg-primary rounded-lg shadow-2xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative border border-accent/50"
-            initial={{ y: -50, opacity: 0 }}
+            className="bg-surface border border-border rounded-lg w-full max-w-2xl overflow-hidden relative shadow-2xl"
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 50, opacity: 0 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            exit={{ y: 20, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-text-muted hover:text-accent transition-colors duration-300 text-2xl"
-              aria-label="Close project details"
-            >
-              <FaTimes />
-            </button>
-            <h3 className="text-3xl font-bold text-accent-glow mb-4">{project.title}</h3>
-            <p className="text-text-muted text-lg mb-6">{project.fullDescription || project.description}</p>
-
-            <div className="mb-6">
-              <h4 className="text-xl font-semibold text-accent-glow mb-2">Tech Stack:</h4>
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-secondary/50 text-accent-glow text-sm rounded-full border border-accent/30"
-                  >
-                    {tech}
-                  </span>
-                ))}
+            {/* Header / Terminal Bar */}
+            <div className="bg-surfaceHighlight border-b border-border p-4 flex justify-between items-center">
+              <div className="flex items-center gap-3 text-secondary font-mono text-sm">
+                <FaTerminal className="text-accent" />
+                <span>~/projects/{project.title.toLowerCase().replace(/\s+/g, '-')}</span>
               </div>
+              <button
+                onClick={onClose}
+                className="text-secondary hover:text-white transition-colors"
+                aria-label="Close"
+              >
+                <FaTimes size={20} />
+              </button>
             </div>
 
-            {project.details && (
-              <div className="mb-6 space-y-4">
-                {project.details.problemStatement && (
-                  <div>
-                    <h4 className="text-xl font-semibold text-accent-glow mb-1">Problem Statement:</h4>
-                    <p className="text-text-muted">{project.details.problemStatement}</p>
-                  </div>
+            <div className="p-8">
+              <h3 className="text-3xl font-bold text-white mb-4 font-sans tracking-tight">
+                {project.title}
+              </h3>
+
+              <p className="text-primary/80 text-lg leading-relaxed mb-8 font-light">
+                {project.description}
+              </p>
+
+              {/* Stats Grid */}
+              {project.stats && project.stats.length > 0 && (
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  {project.stats.map((stat, idx) => (
+                    <div key={idx} className="bg-bg border border-border p-3 rounded">
+                      <div className="text-secondary text-xs font-mono uppercase tracking-wider mb-1">
+                        {stat.label}
+                      </div>
+                      <div className="text-accent font-mono font-bold">
+                        {stat.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Tech Stack */}
+              <div className="mb-8">
+                <h4 className="text-sm text-secondary uppercase tracking-widest mb-3 font-mono">
+                  Stack Configuration
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.techStack.map((tech, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 text-xs font-mono text-primary bg-surfaceHighlight border border-border rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-6 border-t border-border">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-surface border border-border text-white font-mono text-sm hover:border-accent hover:text-accent transition-colors"
+                  >
+                    <FaGithub />
+                    <span>VIEW_SOURCE</span>
+                  </a>
                 )}
-                {project.details.myRole && (
-                  <div>
-                    <h4 className="text-xl font-semibold text-accent-glow mb-1">My Role:</h4>
-                    <p className="text-text-muted">{project.details.myRole}</p>
-                  </div>
-                )}
-                {project.details.keyChallenges && (
-                  <div>
-                    <h4 className="text-xl font-semibold text-accent-glow mb-1">Key Challenges:</h4>
-                    <ul className="list-disc list-inside text-text-muted space-y-1">
-                      {project.details.keyChallenges.map((challenge, index) => (
-                        <li key={index}>{challenge}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {project.details.keyLearningsAndOutcomes && (
-                  <div>
-                    <h4 className="text-xl font-semibold text-accent-glow mb-1">Key Learnings & Outcomes:</h4>
-                    <ul className="list-disc list-inside text-text-muted space-y-1">
-                      {project.details.keyLearningsAndOutcomes.map((outcome, index) => (
-                        <li key={index}>{outcome}</li>
-                      ))}
-                    </ul>
-                  </div>
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent text-white font-mono text-sm hover:bg-accent/90 transition-colors"
+                  >
+                    <FaExternalLinkAlt />
+                    <span>DEPLOYMENT_URL</span>
+                  </a>
                 )}
               </div>
-            )}
-
-            <div className="flex justify-start space-x-4 mt-6 border-t border-border pt-4">
-              {project.githubLink && (
-                <a
-                  href={project.githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/80 transition-colors duration-300 transform hover:scale-105"
-                >
-                  <FaGithub className="mr-2" /> View Code
-                </a>
-              )}
-              {project.liveDemoLink && (
-                <a
-                  href={project.liveDemoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-accent-glow text-white rounded-lg hover:bg-accent-glow/80 transition-colors duration-300 transform hover:scale-105"
-                >
-                  <FaExternalLinkAlt className="mr-2" /> Live Demo
-                </a>
-              )}
             </div>
           </motion.div>
         </motion.div>
