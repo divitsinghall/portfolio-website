@@ -69,6 +69,24 @@ const Leadership: React.FC = () => {
                                     </li>
                                 ))}
                             </ul>
+
+                            {lead.techStack && lead.techStack.length > 0 && (
+                                <>
+                                    <div className="font-mono text-xs text-secondary uppercase tracking-wider mt-6 mb-3">
+                                        // Tech Stack
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {lead.techStack.map((tech, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="px-3 py-1 text-xs font-mono bg-accent/10 text-accent rounded-full border border-accent/20"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </motion.div>

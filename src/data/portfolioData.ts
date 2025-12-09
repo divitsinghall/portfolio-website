@@ -48,6 +48,7 @@ export interface Leadership {
   duration: string;
   description: string;
   keyAchievements: string[];
+  techStack?: string[];
 }
 
 export const PortfolioData = {
@@ -128,9 +129,9 @@ export const PortfolioData = {
       keyAchievements: [
         "Architecting an AI Voice Logging engine to parse natural language into structured nutrition data.",
         "Implementing FODMAP-based risk scoring algorithms and real-time trigger detection.",
-        "Managing a $9,100 budget and negotiating scope priorities (Voice Logging vs. Core Features).",
         "Delivering 'Clinician Mode' reporting to bridge patient data with healthcare providers."
-      ]
+      ],
+      techStack: ["Swift 5+", "SwiftUI", "SFSpeechRecognizer", "Swift Charts", "PDFKit", "SwiftData"]
     }
   ] as Leadership[],
   experience: [
@@ -140,7 +141,7 @@ export const PortfolioData = {
       duration: "Fall 2026",
       location: "Vancouver, BC",
       description: ["Returning for a second internship with the Auto Augmentation Core Team."],
-      tech: ["Java", "AWS"]
+      tech: ["Java", "AWS", "Build-time Instrumentation", "OpenTelemetry"]
     },
     {
       company: "Amazon",
@@ -153,7 +154,7 @@ export const PortfolioData = {
         "Architected a pooled session manager reducing redundant calls by 30% during high-scale investigations.",
         "Integrated Amazon Q for historical incident matching, reducing RCA false starts by 35%."
       ],
-      tech: ["Java", "AWS", "GenAI"]
+      tech: ["Python", "GenAI", "Amazon Q", "APIs"]
     },
     {
       company: "University of Alberta",
@@ -164,7 +165,7 @@ export const PortfolioData = {
         "Developed a semi-supervised CNN pipeline improving classification precision from 22% to 77%.",
         "Implemented LogMMSE denoising and fuzzy clustering (LAMDA 3π) with domain experts."
       ],
-      tech: ["Python", "Deep Learning"]
+      tech: ["Python", "Deep Learning", "Active Learning", "CNNs"]
     }
   ] as Experience[],
   education: [
