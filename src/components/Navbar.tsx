@@ -1,8 +1,9 @@
 // src/components/Navbar.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import MagneticButton from './MagneticButton';
 
 interface NavbarProps {
   activeSection: string;
@@ -79,7 +80,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span className="relative z-10">{link.name}</span>
+                <MagneticButton className="relative z-10">
+                  <span>{link.name}</span>
+                </MagneticButton>
               </Link>
             ))}
           </div>

@@ -111,17 +111,22 @@
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Cybernetic Minimalism */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-bg;
+  background: #030303;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-border rounded-full hover:bg-accent/50 transition-colors;
+  background: #333;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
 }
 
 /* Grid Background Pattern */

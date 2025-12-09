@@ -1,11 +1,17 @@
 // src/sections/Hero.tsx
-import React from 'react';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { PortfolioData } from '../data/portfolioData';
 import { FaGithub, FaLinkedin, FaFileDownload, FaChevronDown, FaShieldAlt } from 'react-icons/fa';
+import { useTypewriter } from '../hooks/useTypewriter';
 
-const Hero: React.FC = () => {
+const Hero = () => {
+  const { displayText, cursor } = useTypewriter({
+    text: PortfolioData.hero.tagline,
+    typingSpeed: 40,
+    pauseChance: 0.12,
+    startDelay: 800,
+  });
   const container = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,7 +28,7 @@ const Hero: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.6, ease: "easeOut" as const }
     },
   };
 
@@ -77,12 +83,13 @@ const Hero: React.FC = () => {
             className="h-px w-24 bg-gradient-to-r from-accent to-transparent mb-8"
           />
 
-          {/* Tagline */}
+          {/* Tagline with Typewriter Effect */}
           <motion.p
             variants={child}
-            className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-4"
+            className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-4 font-mono"
           >
-            {PortfolioData.hero.tagline}
+            <span>{displayText}</span>
+            <span className="text-accent animate-pulse">{cursor}</span>
           </motion.p>
 
           <motion.p

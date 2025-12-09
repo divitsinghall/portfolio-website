@@ -1,5 +1,5 @@
 // src/components/ProjectCard.tsx
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { type Project } from '../data/portfolioData';
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
@@ -11,18 +11,34 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenModal }) => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Mouse position values
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  // Mouse position for gradient glow
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  // Smooth physics springs for rotation
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
+  // Mouse position values for 3D tilt
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
 
-  // Calculate rotation based on mouse position
-  const rotateX = useMotionTemplate`calc(${mouseYSpring} * -0.5deg)`;
-  const rotateY = useMotionTemplate`calc(${mouseXSpring} * 0.5deg)`;
+  // Smooth physics springs for rotation (max 5 degrees)
+  const springConfig = { stiffness: 150, damping: 20 };
+  const mouseXSpring = useSpring(tiltX, springConfig);
+  const mouseYSpring = useSpring(tiltY, springConfig);
+
+  // Calculate rotation based on mouse position (constrained to 5 degrees)
+  const rotateX = useMotionTemplate`calc(${mouseYSpring} * -1deg)`;
+  const rotateY = useMotionTemplate`calc(${mouseXSpring} * 1deg)`;
+
+  // Holographic gradient that follows cursor (600px radius, 15% opacity accent)
+  const glowBackground = useMotionTemplate`
+    radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(59, 130, 246, 0.15), transparent 40%)
+  `;
+
+  // Border glow that follows cursor
+  const borderGlow = useMotionTemplate`
+    radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(59, 130, 246, 0.4), transparent 40%)
+  `;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!ref.current) return;
@@ -30,25 +46,36 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenModal }) => {
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
+    // Update gradient position
+    mouseX.set(x);
+    mouseY.set(y);
 
-    x.set(xPct * 20); // Strength of rotation
-    y.set(yPct * 20);
+    // Calculate tilt (constrained to max 5 degrees)
+    const xPct = (x / width - 0.5) * 5;
+    const yPct = (y / height - 0.5) * 5;
+
+    tiltX.set(xPct);
+    tiltY.set(yPct);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    setIsHovered(false);
+    tiltX.set(0);
+    tiltY.set(0);
   };
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
         transformStyle: "preserve-3d",
@@ -62,22 +89,51 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenModal }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="glass h-full rounded-2xl p-8 shadow-2xl flex flex-col group cursor-pointer relative overflow-hidden transition-all duration-500 hover:border-accent/30">
-        {/* Hover Glow Effect inside card */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-accent-glow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Border glow layer */}
+      <motion.div
+        className="absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500"
+        style={{
+          background: borderGlow,
+          opacity: isHovered ? 1 : 0,
+        }}
+      />
+
+      {/* Card container */}
+      <div className="relative h-full rounded-2xl bg-surface/80 backdrop-blur-sm border border-border/50 p-8 shadow-2xl flex flex-col group cursor-pointer overflow-hidden transition-all duration-500 hover:border-accent/30">
+
+        {/* Holographic glow effect */}
+        <motion.div
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: glowBackground,
+            opacity: isHovered ? 1 : 0,
+          }}
+        />
+
+        {/* Grid pattern reveal on hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(59, 130, 246, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px',
+          }}
+        />
 
         {/* Content Container with 3D translation */}
         <div style={{ transform: "translateZ(20px)" }} className="relative z-10 flex flex-col h-full">
           <div className="flex justify-between items-start mb-4">
-            <h3 className="text-2xl font-heading font-bold text-white group-hover:text-accent-glow transition-colors duration-300">
+            <h3 className="text-2xl font-bold text-primary group-hover:text-accent transition-colors duration-300">
               {project.title}
             </h3>
-            {project.githubLink && (
+            {project.github && (
               <a
-                href={project.githubLink}
+                href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-muted hover:text-white transition-colors duration-300 p-2 hover:bg-secondary/50 rounded-full"
+                className="text-secondary hover:text-accent transition-colors duration-300 p-2 hover:bg-accent/10 rounded-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 <FaGithub size={20} />
@@ -85,7 +141,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenModal }) => {
             )}
           </div>
 
-          <p className="text-text-muted mb-6 flex-grow leading-relaxed font-light">
+          <p className="text-secondary mb-6 flex-grow leading-relaxed font-light">
             {project.description}
           </p>
 
@@ -93,7 +149,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenModal }) => {
             {project.techStack.map((tech, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-primary/50 text-accent-glow text-xs font-medium rounded-full border border-accent/20 backdrop-blur-sm"
+                className="px-3 py-1 bg-surface/80 text-accent text-xs font-mono rounded-full border border-accent/20 backdrop-blur-sm"
               >
                 {tech}
               </span>

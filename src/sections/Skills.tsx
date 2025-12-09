@@ -1,57 +1,80 @@
 // src/sections/Skills.tsx
-import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { PortfolioData } from '../data/portfolioData';
 import { motion } from 'framer-motion';
 import { FaCode, FaCloud, FaCubes, FaBrain } from 'react-icons/fa';
+import BlurFade from '../components/ui/BlurFade';
+import type { ReactNode } from 'react';
 
 interface SkillCategoryProps {
   title: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   skills: string[];
   delay?: number;
   command: string;
+  index: number;
 }
 
-const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills, delay = 0, command }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay }}
-    className="node-card"
-  >
-    {/* Category header */}
-    <div className="flex items-center gap-3 mb-4">
-      <div className="text-accent">{icon}</div>
-      <h3 className="text-lg font-semibold text-primary">{title}</h3>
-    </div>
+// Stagger container for boot-sequence effect
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
+    },
+  },
+};
 
-    {/* Terminal command style */}
-    <div className="font-mono text-xs text-secondary mb-4 flex items-center gap-2">
-      <span className="text-accent">$</span>
-      <span>{command}</span>
-    </div>
+const staggerItem = {
+  hidden: { opacity: 0, x: -10 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+};
 
-    {/* Skills list */}
-    <div className="flex flex-wrap gap-2">
-      {skills.map((skill, index) => (
-        <motion.span
-          key={skill}
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, delay: delay + (index * 0.05) }}
-          className="tech-tag"
-        >
-          {skill}
-        </motion.span>
-      ))}
+const SkillCategory = ({ title, icon, skills, delay = 0, command, index }: SkillCategoryProps) => (
+  <BlurFade delay={delay + index * 0.1} inView>
+    <div className="node-card h-full">
+      {/* Category header */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="text-accent">{icon}</div>
+        <h3 className="text-lg font-semibold text-primary">{title}</h3>
+      </div>
+
+      {/* Terminal command style - boot sequence feel */}
+      <div className="font-mono text-xs text-secondary mb-4 flex items-center gap-2">
+        <span className="text-success">$</span>
+        <span className="text-accent">{command}</span>
+        <span className="animate-pulse text-success">_</span>
+      </div>
+
+      {/* Skills list with staggered animation */}
+      <motion.div
+        className="flex flex-wrap gap-2"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        {skills.map((skill) => (
+          <motion.span
+            key={skill}
+            variants={staggerItem}
+            className="tech-tag"
+          >
+            {skill}
+          </motion.span>
+        ))}
+      </motion.div>
     </div>
-  </motion.div>
+  </BlurFade>
 );
 
-const Skills: React.FC = () => {
+const Skills = () => {
   const categories = [
     {
       title: "Languages",
@@ -82,10 +105,12 @@ const Skills: React.FC = () => {
   return (
     <section className="section-container bg-surface">
       <div className="container mx-auto px-6 max-w-6xl">
-        <SectionHeader
-          title="Tech Stack"
-          subtitle="Languages, cloud infrastructure, and AI/ML tools I work with."
-        />
+        <BlurFade delay={0.1} inView>
+          <SectionHeader
+            title="Tech Stack"
+            subtitle="Languages, cloud infrastructure, and AI/ML tools I work with."
+          />
+        </BlurFade>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {categories.map((category, index) => (
@@ -95,7 +120,7 @@ const Skills: React.FC = () => {
               icon={category.icon}
               skills={category.skills}
               command={category.command}
-              delay={index * 0.1}
+              index={index}
             />
           ))}
         </div>
