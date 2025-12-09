@@ -33,6 +33,14 @@ export interface Achievement {
   description?: string;
 }
 
+export interface Certification {
+  title: string;
+  issuer: string;
+  date: string;
+  refId: string;
+  link: string;
+}
+
 export const PortfolioData = {
   name: "Divit Singhal",
   role: "Distributed Systems & AI Engineer",
@@ -53,6 +61,22 @@ export const PortfolioData = {
     frameworks: [".NET 8", "Ruby on Rails", "React", "Next.js", "Django", "Terraform"],
     concepts: ["Distributed Systems", "Atomic Consistency", "Microservices", "System Design"]
   },
+  certifications: [
+    {
+      title: "Solutions Architect Associate",
+      issuer: "AWS",
+      date: "Dec 2028",
+      refId: "SAA-C03",
+      link: "https://www.credly.com/badges/46643584-ce6c-413b-8767-d5e92f8bd189/public_url"
+    },
+    {
+      title: "Cloud Practitioner",
+      issuer: "AWS",
+      date: "Nov 2028",
+      refId: "CLF-C02",
+      link: "https://www.credly.com/badges/db2e02de-cbb9-49cf-ada3-6b6b6fede3de/public_url"
+    }
+  ] as Certification[],
   projects: [
     {
       title: "Titan Orchestrator",
@@ -72,16 +96,6 @@ export const PortfolioData = {
       stats: [
         { label: "Concurrency", value: "5,000+ req/s" },
         { label: "Latency", value: "<5ms" }
-      ]
-    },
-    {
-      title: "Rodent Vocalization Classifier",
-      description: "Semi-supervised CNN pipeline for bioacoustics. Engineered ultrasonic frequency filtering (17-40kHz) and implemented entropy-based uncertainty sampling for active learning.",
-      techStack: ["Python", "TensorFlow", "Signal Processing", "Active Learning"],
-      github: "https://github.com/divitsinghall",
-      stats: [
-        { label: "Precision/Recall", value: "22% → 77%" },
-        { label: "Dataset", value: "47,000+ Files" }
       ]
     },
     {

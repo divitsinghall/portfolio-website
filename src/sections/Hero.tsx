@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { PortfolioData } from '../data/portfolioData';
-import { FaGithub, FaLinkedin, FaFileDownload, FaChevronDown } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaFileDownload, FaChevronDown, FaShieldAlt } from 'react-icons/fa';
 
 const Hero: React.FC = () => {
   const container = {
@@ -95,7 +95,7 @@ const Hero: React.FC = () => {
           {/* CTA Buttons */}
           <motion.div
             variants={child}
-            className="flex flex-wrap gap-4 mb-12"
+            className="flex flex-wrap gap-4 mb-8"
           >
             <Link
               to="projects"
@@ -115,6 +115,32 @@ const Hero: React.FC = () => {
               <FaFileDownload />
               DOWNLOAD_RESUME
             </a>
+          </motion.div>
+
+          {/* Credentials / Certifications */}
+          <motion.div variants={child} className="mb-10">
+            <div className="flex items-center gap-2 mb-3">
+              <FaShieldAlt className="text-accent/60" size={14} />
+              <span className="font-mono text-xs text-secondary/60 uppercase tracking-wider">
+                Verified Credentials
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {PortfolioData.certifications.map((cert) => (
+                <a
+                  key={cert.refId}
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-lg font-mono text-xs
+                           hover:border-accent hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all duration-300"
+                >
+                  <span className="text-warning font-semibold">{cert.issuer}</span>
+                  <span className="text-secondary/40">::</span>
+                  <span className="text-secondary group-hover:text-primary transition-colors">{cert.refId}</span>
+                </a>
+              ))}
+            </div>
           </motion.div>
 
           {/* Social Links */}
