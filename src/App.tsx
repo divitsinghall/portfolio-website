@@ -5,6 +5,7 @@ import About from './sections/About';
 import Skills from './sections/Skills';
 import Projects from './sections/Projects';
 import Experience from './sections/Experience';
+import Leadership from './sections/Leadership';
 import Education from './sections/Education';
 import Achievements from './sections/Achievements';
 import Contact from './sections/Contact';
@@ -18,7 +19,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'education', 'achievements', 'contact'];
+      const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'leadership', 'education', 'achievements', 'contact'];
       let currentSection = 'hero';
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
@@ -69,6 +70,7 @@ const App: React.FC = () => {
         <Element name="skills" id="skills"><Skills /></Element>
         <Element name="projects" id="projects"><Projects /></Element>
         <Element name="experience" id="experience"><Experience /></Element>
+        <Element name="leadership" id="leadership"><Leadership /></Element>
         <Element name="education" id="education"><Education /></Element>
         <Element name="achievements" id="achievements"><Achievements /></Element>
         <Element name="contact" id="contact"><Contact /></Element>

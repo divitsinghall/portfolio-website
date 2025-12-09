@@ -41,9 +41,18 @@ export interface Certification {
   link: string;
 }
 
+export interface Leadership {
+  project: string;
+  role: string;
+  org: string;
+  duration: string;
+  description: string;
+  keyAchievements: string[];
+}
+
 export const PortfolioData = {
   name: "Divit Singhal",
-  role: "Distributed Systems & AI Engineer",
+  role: "Software & AI/ML Engineer",
   availability: "Incoming SDE @ Amazon",
   socials: {
     github: "https://github.com/divitsinghall",
@@ -52,14 +61,14 @@ export const PortfolioData = {
     resume: "/Divit_Singhal_Resume.pdf"
   },
   hero: {
-    tagline: "Architecting resilient distributed systems and scalable AI solutions.",
-    subline: "Focused on high-concurrency engines, atomic consistency, and cloud-native orchestration."
+    tagline: "Building intelligent software and resilient distributed systems.",
+    subline: "From high-concurrency cloud engines to clinically-focused AI applications."
   },
   skills: {
-    languages: ["Java", "Python", "C/C++", "Go", "TypeScript", "Ruby", "C#"],
-    infrastructure: ["AWS (Fargate, Lambda)", "Docker", "Kubernetes", "Redis", "gRPC"],
-    frameworks: [".NET 8", "Ruby on Rails", "React", "Next.js", "Django", "Terraform"],
-    concepts: ["Distributed Systems", "Atomic Consistency", "Microservices", "System Design"]
+    languages: ["Java", "Python", "C/C++", "JavaScript", "TypeScript", "SQL", "Ruby", "C#"],
+    cloud_devops: ["AWS (EC2, Lambda, S3)", "GCP", "Azure", "Docker", "Kubernetes", "Linux/Unix"],
+    frameworks: ["React", "Node.js", "Next.js", "Flask", "Django", "Rails", "ASP.NET", "Tailwind CSS", "JUnit", "pytest"],
+    ai_ml: ["PyTorch", "TensorFlow", "scikit-learn", "NumPy", "pandas"]
   },
   certifications: [
     {
@@ -109,6 +118,21 @@ export const PortfolioData = {
       ]
     }
   ] as Project[],
+  leadership: [
+    {
+      project: "EzyGut Mobile App MVP",
+      role: "Lead Developer",
+      org: "Freelance Client",
+      duration: "Dec 2025 - Present",
+      description: "Leading the end-to-end development of a clinical digestive health tracker under a strict 10-week MVP timeline.",
+      keyAchievements: [
+        "Architecting an AI Voice Logging engine to parse natural language into structured nutrition data.",
+        "Implementing FODMAP-based risk scoring algorithms and real-time trigger detection.",
+        "Managing a $9,100 budget and negotiating scope priorities (Voice Logging vs. Core Features).",
+        "Delivering 'Clinician Mode' reporting to bridge patient data with healthcare providers."
+      ]
+    }
+  ] as Leadership[],
   experience: [
     {
       company: "Amazon",

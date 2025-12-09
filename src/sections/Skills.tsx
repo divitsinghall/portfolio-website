@@ -3,7 +3,7 @@ import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { PortfolioData } from '../data/portfolioData';
 import { motion } from 'framer-motion';
-import { FaCode, FaServer, FaCubes, FaBrain } from 'react-icons/fa';
+import { FaCode, FaCloud, FaCubes, FaBrain } from 'react-icons/fa';
 
 interface SkillCategoryProps {
   title: string;
@@ -60,10 +60,10 @@ const Skills: React.FC = () => {
       command: "cat ~/.languages",
     },
     {
-      title: "Infrastructure",
-      icon: <FaServer size={20} />,
-      skills: PortfolioData.skills.infrastructure,
-      command: "docker ps --all",
+      title: "Cloud & DevOps",
+      icon: <FaCloud size={20} />,
+      skills: PortfolioData.skills.cloud_devops,
+      command: "aws configure list",
     },
     {
       title: "Frameworks",
@@ -72,10 +72,10 @@ const Skills: React.FC = () => {
       command: "npm list --depth=0",
     },
     {
-      title: "Concepts",
+      title: "AI / ML",
       icon: <FaBrain size={20} />,
-      skills: PortfolioData.skills.concepts,
-      command: "man distributed-systems",
+      skills: PortfolioData.skills.ai_ml,
+      command: "pip list | grep torch",
     },
   ];
 
@@ -84,7 +84,7 @@ const Skills: React.FC = () => {
       <div className="container mx-auto px-6 max-w-6xl">
         <SectionHeader
           title="Tech Stack"
-          subtitle="Languages, infrastructure, and concepts I work with daily."
+          subtitle="Languages, cloud infrastructure, and AI/ML tools I work with."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
