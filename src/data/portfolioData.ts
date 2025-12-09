@@ -151,10 +151,14 @@ export const PortfolioData = {
       duration: "Sep 2022 – Dec 2026",
       coursework: [
         "Data Structures & Algorithms",
-        "Distributed Systems",
         "Machine Learning",
         "Computer Vision",
-        "Database Management"
+        "Database Management",
+        "Software Engineering and Product Management",
+        "Reinforcement Learning",
+        "Artificial Intelligence Capstone",
+        "Ethics in AI",
+        "Search and Planning in AI"
       ]
     }
   ] as Education[],
