@@ -11,11 +11,13 @@ import Achievements from './sections/Achievements';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
 import NoiseBackground from './components/NoiseBackground';
+import CommandMenu from './components/CommandMenu';
 import { Element } from 'react-scroll';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,6 +53,9 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-bg text-primary font-sans relative">
 
+      {/* Command Menu (Cmd+K) */}
+      <CommandMenu isOpen={commandMenuOpen} setIsOpen={setCommandMenuOpen} />
+
       {/* Film Grain Texture (Top Layer) */}
       <NoiseBackground />
 
@@ -62,7 +67,7 @@ const App: React.FC = () => {
         }}
       />
 
-      <Navbar activeSection={activeSection} />
+      <Navbar activeSection={activeSection} onCommandMenuOpen={() => setCommandMenuOpen(true)} />
 
       <main className="relative z-10">
         <Element name="hero" id="hero"><Hero /></Element>

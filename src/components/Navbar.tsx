@@ -1,15 +1,16 @@
 // src/components/Navbar.tsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaTerminal } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import MagneticButton from './MagneticButton';
 
 interface NavbarProps {
   activeSection: string;
+  onCommandMenuOpen?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
+const Navbar: React.FC<NavbarProps> = ({ activeSection, onCommandMenuOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -87,13 +88,24 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             ))}
           </div>
 
-          {/* Status Indicator */}
-          <div className="hidden md:flex items-center gap-2 text-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
-            </span>
-            <span className="text-secondary font-mono text-xs">ONLINE</span>
+          {/* Command Menu Trigger + Status */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* Terminal Icon for Command Palette */}
+            <button
+              onClick={onCommandMenuOpen}
+              className="flex items-center gap-2 px-3 py-1.5 bg-surface/50 border border-white/10 rounded-lg hover:border-white/20 hover:bg-surface transition-all text-secondary hover:text-primary"
+            >
+              <FaTerminal size={12} />
+              <span className="text-xs font-mono">⌘K</span>
+            </button>
+            {/* Status Indicator */}
+            <div className="flex items-center gap-2 text-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              </span>
+              <span className="text-secondary font-mono text-xs">ONLINE</span>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
