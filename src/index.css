@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,14 +6,14 @@
 
 :root {
   --color-bg: #030303;
-  --color-surface: #0A0A0A;
-  --color-surface-highlight: #121212;
-  --color-border: #222222;
-  --color-primary: #E1E1E1;
-  --color-secondary: #888888;
-  --color-accent: #3B82F6;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
+  --color-surface: #0a0a0a;
+  --color-surface-highlight: #111111;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-primary: #fafafa;
+  --color-secondary: #a1a1aa;
+  --color-accent: #3b82f6;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
 }
 
 @layer base {
@@ -27,13 +27,22 @@
     @apply bg-bg text-primary font-sans overflow-x-hidden;
   }
 
-  h1,
+  /* Apple-style typography: tight tracking on headers */
+  h1 {
+    @apply font-sans font-bold tracking-tighter;
+  }
+
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-sans font-bold tracking-tight;
+    @apply font-sans font-semibold tracking-tight;
+  }
+
+  /* Body text: relaxed tracking with zinc-400 coloring */
+  p {
+    @apply tracking-normal text-secondary;
   }
 
   ::selection {
@@ -43,24 +52,32 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-surface/80 backdrop-blur-md border border-border rounded-xl;
+    @apply bg-surface/80 backdrop-blur-md border border-white/10 rounded-2xl;
   }
 
   .node-card {
-    @apply bg-surface border border-border rounded-lg p-6 hover:border-accent/50 hover:bg-surfaceHighlight transition-all duration-300 relative overflow-hidden;
+    @apply bg-surface/50 border border-white/10 rounded-2xl p-6 hover:border-white/20 hover:bg-surface/80 transition-all duration-500 ease-out relative overflow-hidden;
   }
 
   .node-card::before {
     content: '';
-    @apply absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 transition-opacity duration-300;
+    @apply absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500;
   }
 
   .node-card:hover::before {
     @apply opacity-100;
   }
 
+  .bento-card {
+    @apply relative bg-surface/30 border border-white/[0.08] rounded-3xl overflow-hidden backdrop-blur-sm transition-all duration-500 ease-out;
+  }
+
+  .bento-card:hover {
+    @apply border-white/20 bg-surface/60;
+  }
+
   .trace-line {
-    @apply w-[2px] bg-gradient-to-b from-accent via-accent/50 to-transparent;
+    @apply w-[1px] bg-gradient-to-b from-white/20 via-white/10 to-transparent;
   }
 
   .terminal-text {
@@ -68,37 +85,42 @@
   }
 
   .stat-badge {
-    @apply inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-md font-mono text-xs text-secondary;
+    @apply inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg font-mono text-xs text-secondary;
   }
 
   .stat-value {
-    @apply text-success font-semibold;
+    @apply text-teal-400 font-semibold;
   }
 
   .tech-tag {
-    @apply px-2.5 py-1 bg-surface border border-border rounded text-xs font-mono text-secondary hover:border-accent/50 hover:text-accent transition-colors;
+    @apply px-2.5 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-mono text-secondary hover:border-white/20 hover:text-primary transition-all duration-300;
   }
 
   .section-container {
-    @apply py-24 relative;
+    @apply py-24 md:py-32 relative;
   }
 
   .cmd-button {
-    @apply relative px-6 py-3 bg-surface border border-border text-primary font-mono text-sm hover:border-accent hover:text-accent transition-all duration-300;
+    @apply relative px-6 py-3 bg-white/5 border border-white/10 text-primary font-mono text-sm hover:border-white/30 hover:bg-white/10 transition-all duration-300 rounded-xl;
   }
 
   .primary-button {
-    @apply px-6 py-3 bg-white text-bg font-mono text-sm font-bold hover:bg-gray-200 transition-colors flex items-center gap-2;
+    @apply px-6 py-3 bg-white text-bg font-medium text-sm rounded-xl hover:bg-white/90 transition-all duration-300 flex items-center gap-2;
+  }
+
+  /* Magnetic button wrapper */
+  .magnetic-wrapper {
+    @apply inline-block;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-secondary;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-secondary;
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1);
   }
 
   .scrollbar-hide::-webkit-scrollbar {
@@ -109,30 +131,36 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Mask for scroll reveal effect */
+  .mask-reveal {
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  }
 }
 
-/* Custom Scrollbar - Cybernetic Minimalism */
+/* Custom Scrollbar - Minimal Apple style */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #030303;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Grid Background Pattern */
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(34, 34, 34, 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(34, 34, 34, 0.3) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
 }

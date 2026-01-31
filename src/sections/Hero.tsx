@@ -2,152 +2,139 @@
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { PortfolioData } from '../data/portfolioData';
-import { FaGithub, FaLinkedin, FaFileDownload, FaChevronDown, FaShieldAlt } from 'react-icons/fa';
-import { useTypewriter } from '../hooks/useTypewriter';
+import { FaGithub, FaLinkedin, FaChevronDown } from 'react-icons/fa';
+import { HiDownload } from 'react-icons/hi';
+import TextScrambler from '../components/TextScrambler';
+import MagneticButton from '../components/MagneticButton';
 
 const Hero = () => {
-  const { displayText, cursor } = useTypewriter({
-    text: PortfolioData.hero.tagline,
-    typingSpeed: 40,
-    pauseChance: 0.12,
-    startDelay: 800,
-  });
+  const roles = ['AI Engineer', 'Quant Developer', 'System Architect'];
+
   const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.3,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
   const child = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" as const }
+      filter: 'blur(0px)',
+      transition: { duration: 0.8, ease: 'easeOut' as const }
     },
   };
 
   return (
-    <section className="min-h-screen bg-bg relative flex flex-col justify-center px-6 pt-20 overflow-hidden">
-      {/* Technical Grid Background */}
-      <div className="absolute inset-0 grid-bg opacity-40" />
+    <section className="min-h-screen bg-bg relative flex flex-col justify-center items-center px-6 overflow-hidden">
+      {/* Top-centered Spotlight Effect - Apple Pro Style */}
+      <div
+        className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-500/20 rounded-full blur-3xl pointer-events-none"
+        style={{ filter: 'blur(120px)' }}
+      />
 
-      {/* Radial Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/50 to-bg pointer-events-none" />
+      {/* Subtle secondary glow */}
+      <div
+        className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-cyan-400/10 rounded-full pointer-events-none"
+        style={{ filter: 'blur(100px)' }}
+      />
 
-      {/* Accent glow */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Subtle Grid Background */}
+      <div className="absolute inset-0 grid-bg opacity-30" />
 
-      <div className="container mx-auto relative z-10 max-w-5xl">
+      {/* Fade to black at edges */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg pointer-events-none" />
+
+      <div className="container mx-auto relative z-10 max-w-5xl text-center">
         <motion.div
           variants={container}
           initial="hidden"
           animate="visible"
+          className="flex flex-col items-center"
         >
-          {/* System Status Badge */}
-          <motion.div variants={child} className="mb-6">
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-surface border border-border rounded-full">
+          {/* Status Badge */}
+          <motion.div variants={child} className="mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/[0.03] border border-white/10 rounded-full backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-400"></span>
               </span>
-              <span className="font-mono text-xs text-secondary uppercase tracking-wider">
+              <span className="font-medium text-xs text-secondary uppercase tracking-wider">
                 {PortfolioData.availability}
               </span>
             </div>
           </motion.div>
 
-          {/* Main Title */}
+          {/* Massive Name Typography - Metallic Gradient */}
           <motion.h1
             variants={child}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary tracking-tight mb-6"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-6 leading-[0.9]"
           >
-            {PortfolioData.name}
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
+              {PortfolioData.name.split(' ')[0]}
+            </span>
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white/70 to-white/40">
+              {PortfolioData.name.split(' ')[1]}
+            </span>
           </motion.h1>
 
-          {/* Role subtitle */}
-          <motion.div variants={child} className="mb-8">
-            <span className="font-mono text-accent text-lg md:text-xl">
-              {PortfolioData.role}
-            </span>
+          {/* Text Scrambler for Roles - Refined Typography */}
+          <motion.div variants={child} className="mb-12">
+            <TextScrambler
+              texts={roles}
+              interval={3500}
+              className="text-lg md:text-xl font-medium tracking-widest"
+            />
           </motion.div>
 
-          {/* Accent line */}
+          {/* Accent Line */}
           <motion.div
             variants={child}
-            className="h-px w-24 bg-gradient-to-r from-accent to-transparent mb-8"
+            className="h-px w-24 bg-gradient-to-r from-transparent via-white/30 to-transparent mb-12"
           />
 
-          {/* Tagline with Typewriter Effect */}
+          {/* Tagline */}
           <motion.p
             variants={child}
-            className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-4 font-mono"
+            className="text-base md:text-lg text-secondary/70 max-w-xl leading-relaxed mb-12"
           >
-            <span>{displayText}</span>
-            <span className="text-accent animate-pulse">{cursor}</span>
+            {PortfolioData.hero.tagline}
           </motion.p>
 
-          <motion.p
-            variants={child}
-            className="text-base md:text-lg text-secondary/60 max-w-2xl leading-relaxed mb-10"
-          >
-            {PortfolioData.hero.subline}
-          </motion.p>
-
-          {/* CTA Buttons */}
+          {/* CTA Buttons with Magnetic Effect */}
           <motion.div
             variants={child}
-            className="flex flex-wrap gap-4 mb-8"
+            className="flex flex-wrap justify-center gap-4 mb-12"
           >
-            <Link
-              to="projects"
-              smooth={true}
-              duration={800}
-              className="cmd-button cursor-pointer"
-            >
-              ~/view_projects
-            </Link>
+            <MagneticButton>
+              <Link
+                to="projects"
+                smooth={true}
+                duration={1000}
+                className="cmd-button cursor-pointer inline-flex"
+              >
+                View Work
+              </Link>
+            </MagneticButton>
 
-            <a
-              href={PortfolioData.socials.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="primary-button"
-            >
-              <FaFileDownload />
-              DOWNLOAD_RESUME
-            </a>
-          </motion.div>
-
-          {/* Credentials / Certifications */}
-          <motion.div variants={child} className="mb-10">
-            <div className="flex items-center gap-2 mb-3">
-              <FaShieldAlt className="text-accent/60" size={14} />
-              <span className="font-mono text-xs text-secondary/60 uppercase tracking-wider">
-                Verified Credentials
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {PortfolioData.certifications.map((cert) => (
-                <a
-                  key={cert.refId}
-                  href={cert.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-lg font-mono text-xs
-                           hover:border-accent hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all duration-300"
-                >
-                  <span className="text-warning font-semibold">{cert.issuer}</span>
-                  <span className="text-secondary/40">::</span>
-                  <span className="text-secondary group-hover:text-primary transition-colors">{cert.refId}</span>
-                </a>
-              ))}
-            </div>
+            <MagneticButton>
+              <a
+                href={PortfolioData.socials.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="primary-button"
+              >
+                <HiDownload className="text-lg" />
+                Resume
+              </a>
+            </MagneticButton>
           </motion.div>
 
           {/* Social Links */}
@@ -159,53 +146,40 @@ const Hero = () => {
               href={PortfolioData.socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary hover:text-primary transition-colors duration-300"
+              className="text-secondary/60 hover:text-primary transition-colors duration-300"
             >
-              <FaGithub size={24} />
+              <FaGithub size={22} />
             </a>
             <a
               href={PortfolioData.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary hover:text-accent transition-colors duration-300"
+              className="text-secondary/60 hover:text-accent transition-colors duration-300"
             >
-              <FaLinkedin size={24} />
+              <FaLinkedin size={22} />
             </a>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Decorative Code Block */}
-      <div className="absolute right-8 top-1/3 opacity-[0.03] hidden xl:block font-mono text-sm text-primary select-none">
-        <pre className="leading-relaxed">{`class TitanOrchestrator {
-  private readonly _master: IMasterNode;
-  private readonly _redis: IStateManager;
-  
-  async executeJob(job: Job): Promise<void> {
-    const worker = await this._master.assign(job);
-    await worker.execute();
-  }
-}`}</pre>
-      </div>
-
-      {/* Scroll indicator */}
+      {/* Scroll Indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        transition={{ delay: 2, duration: 1 }}
       >
         <Link
           to="about"
           smooth={true}
-          duration={800}
-          className="cursor-pointer text-secondary/40 hover:text-accent transition-colors"
+          duration={1000}
+          className="cursor-pointer text-secondary/30 hover:text-white/50 transition-colors"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           >
-            <FaChevronDown size={24} />
+            <FaChevronDown size={20} />
           </motion.div>
         </Link>
       </motion.div>

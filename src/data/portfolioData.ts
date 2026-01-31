@@ -89,6 +89,17 @@ export const PortfolioData = {
   ] as Certification[],
   projects: [
     {
+      title: "Chronos-ITCH",
+      description: "Zero-copy NASDAQ TotalView-ITCH 5.0 feed handler for HFT. Lock-free memory pool with 10M pre-allocated order slots, price-time priority matching engine, and Python bindings for quant research.",
+      techStack: ["C++20", "Zero-Copy", "Lock-free Pool", "pybind11", "CMake"],
+      github: "https://github.com/divitsinghall/Chronos-ITCH",
+      stats: [
+        { label: "Parser Latency", value: "0.60ns" },
+        { label: "Throughput", value: "1.66B msg/s" },
+        { label: "Matching Engine", value: "44.9ns" }
+      ]
+    },
+    {
       title: "Titan Orchestrator",
       description: "A cloud-native distributed job scheduler architected on AWS Fargate. Features a custom VPC topology, bi-directional gRPC streams for real-time command-and-control, and a 'Master-Worker' pattern using Redis for state management.",
       techStack: [".NET 8", "gRPC", "AWS Fargate", "Redis", "Docker"],
@@ -99,6 +110,15 @@ export const PortfolioData = {
       ]
     },
     {
+      title: "EzyGut",
+      description: "Clinical digestive health tracker with AI Voice Logging that parses natural language into structured nutrition data. FODMAP-based risk scoring and real-time trigger detection with Clinician Mode reporting.",
+      techStack: ["Swift 5+", "SwiftUI", "SFSpeechRecognizer", "Swift Charts", "SwiftData"],
+      stats: [
+        { label: "Platform", value: "iOS Native" },
+        { label: "AI Feature", value: "Voice Logging" }
+      ]
+    },
+    {
       title: "FlashBurst",
       description: "High-concurrency flash-sale engine handling 5k+ req/s with zero inventory drift. Utilizes Redis Lua scripting for atomicity and an asynchronous write-behind pattern to decouple reservation from persistence.",
       techStack: ["Ruby on Rails", "Redis", "Sidekiq", "PostgreSQL"],
@@ -106,16 +126,6 @@ export const PortfolioData = {
       stats: [
         { label: "Concurrency", value: "5,000+ req/s" },
         { label: "Latency", value: "<5ms" }
-      ]
-    },
-    {
-      title: "Forget Me Not Platform",
-      description: "Layered companion platform with RBAC, identity management, and commerce pipelines. 100% test coverage on protected routes via Clerk sessions.",
-      techStack: ["React Native", "Django", "AWS", "Stripe API"],
-      github: "https://github.com/divitsinghall",
-      stats: [
-        { label: "Uptime", value: "99.9%" },
-        { label: "Security", value: "RBAC" }
       ]
     }
   ] as Project[],

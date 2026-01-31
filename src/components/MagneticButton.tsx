@@ -1,52 +1,77 @@
+// src/components/MagneticButton.tsx
 import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 interface MagneticButtonProps {
   children: React.ReactNode;
-  className?: string; // Allow passing custom classes
+  className?: string;
+  strength?: number; // Control magnetic pull strength
 }
 
-export const MagneticButton: React.FC<MagneticButtonProps> = ({ children, className = "" }) => {
+export const MagneticButton: React.FC<MagneticButtonProps> = ({
+  children,
+  className = "",
+  strength = 0.35
+}) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouse = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    // Safety check: ensure ref exists
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Spring physics for smooth, Apple-like feel
+  const springConfig = { stiffness: 300, damping: 20, mass: 0.5 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
-    
+
+    const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
-    
+
     // Calculate distance from center
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
 
-    // Update position (the divisor controls the "strength" of the magnet)
-    // Higher divisor = weaker pull
-    setPosition({ x: middleX * 0.5, y: middleY * 0.5 });
+    // Apply magnetic pull with configurable strength
+    x.set(middleX * strength);
+    y.set(middleY * strength);
   };
 
-  const reset = () => {
-    setPosition({ x: 0, y: 0 });
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
-  const { x, y } = position;
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+    setIsHovered(false);
+  };
 
   return (
     <motion.div
-      style={{ position: "relative" }}
       ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={reset}
-      animate={{ x, y }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 150, 
-        damping: 15, 
-        mass: 0.1 
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        x: springX,
+        y: springY,
+        position: 'relative'
       }}
-      className={className}
+      className={`inline-block ${className}`}
     >
+      {/* Subtle glow on hover */}
+      <motion.div
+        className="absolute inset-0 rounded-xl bg-accent/10 blur-xl pointer-events-none"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+          scale: isHovered ? 1.2 : 0.8
+        }}
+        transition={{ duration: 0.3 }}
+      />
       {children}
     </motion.div>
   );
