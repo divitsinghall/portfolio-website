@@ -138,7 +138,7 @@ export const PortfolioData = {
     {
       company: "Amazon",
       role: "Incoming SDE Intern (Auto Augmentation)",
-      duration: "Fall 2026",
+      duration: "Summer 2026 (May - August 2026)",
       location: "Vancouver, BC",
       description: ["Returning for a second internship with the Auto Augmentation Core Team."],
       tech: ["Java", "AWS", "Build-time Instrumentation", "OpenTelemetry"]
